@@ -1,11 +1,11 @@
-import LuxuryHero from "@/components/homepage/LuxuryHero";
+import Hero from "@/components/homepage/Hero";
 import BrandStory from "@/components/homepage/BrandStory";
-import TopShelfPicksLuxury from "@/components/homepage/TopShelfPicksLuxury";
+import TopShelfPicks from "@/components/homepage/TopShelfPicks";
 import NewReleasePlaceholder from "@/components/homepage/NewReleasePlaceholder";
-import GrabTheDealsPlaceholder from "@/components/homepage/GrabTheDealsPlaceholder";
+import GrabTheDeal from "@/components/homepage/GrabTheDeal";
 import IngredientPhilosophy from "@/components/homepage/IngredientPhilosophy";
 import BrandMotto from "@/components/homepage/BrandMotto";
-import LuxuryTestimonials from "@/components/homepage/LuxuryTestimonials";
+import Testimonials from "@/components/homepage/Testimonials";
 import PressAwards from "@/components/homepage/PressAwards";
 import FounderStory from "@/components/homepage/FounderStory";
 import BlogHighlights from "@/components/homepage/BlogHighlights";
@@ -14,14 +14,14 @@ import AuthorizedRetailers from "@/components/homepage/AuthorizedRetailers";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      <LuxuryHero />
+      <Hero />
       <BrandStory />
-      <TopShelfPicksLuxury />
+      <TopShelfPicks />
       <NewReleasePlaceholder />
-      <GrabTheDealsPlaceholder />
+      <GrabTheDeal />
       <IngredientPhilosophy />
       <BrandMotto />
-      <LuxuryTestimonials />
+      <Testimonials />
       <PressAwards />
       <FounderStory />
       <BlogHighlights />

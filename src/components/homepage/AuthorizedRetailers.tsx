@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Parody retailer data with SVG-style logos
 const retailers = [
@@ -265,6 +266,34 @@ export default function AuthorizedRetailers() {
         paddingBottom: "clamp(3rem, 6vw, 5rem)",
       }}
     >
+      {/* Vintage background image - prominent with vintage effect */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.8,
+        }}
+      >
+        <Image
+          src="/assets/hero/hero-image-duo-landscape.webp"
+          alt=""
+          fill
+          className="object-cover"
+          style={{
+            filter: "blur(2px) sepia(0.25) saturate(0.85)",
+            objectPosition: "center 70%",
+          }}
+          sizes="100vw"
+        />
+      </div>
+
+      {/* Overlay for text readability */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.6) 100%)",
+        }}
+      />
+
       <style>{`
         .retailers-container {
           max-width: 1400px;
@@ -311,7 +340,7 @@ export default function AuthorizedRetailers() {
         }
       `}</style>
 
-      <div className="retailers-container">
+      <div className="retailers-container relative z-10">
         {/* Header */}
         <div className="retailers-header">
           {/* Eyebrow */}

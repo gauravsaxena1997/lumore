@@ -1,9 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { Gift, Timer } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { products } from "@/lib/constants";
+
+// Deal configuration - matches video: Solar Veil, Reset Mist (toner), Lumiskin
+const dealProducts = [products[0], products[3], products[2]]; // Solar Veil, Reset Mist, Lumiskin
+const originalPrice = dealProducts.reduce((sum, p) => sum + p.price, 0); // ₹9,400
+const dealPrice = 6499;
+const savings = originalPrice - dealPrice;
 
 export default function GrabTheDeal() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,8 +18,7 @@ export default function GrabTheDeal() {
     offset: ["start end", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-  // Countdown timer (24 hours from now)
+  // Countdown timer
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 59,
@@ -30,220 +35,302 @@ export default function GrabTheDeal() {
         } else if (prev.hours > 0) {
           return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
         }
-        return prev;
+        return { hours: 23, minutes: 59, seconds: 59 };
       });
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
+  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
+
+  // Subtle parallax for product images
+  const productY1 = useTransform(scrollYProgress, [0, 1], [15, -15]);
+  const productY2 = useTransform(scrollYProgress, [0, 1], [10, -10]);
+  const productY3 = useTransform(scrollYProgress, [0, 1], [20, -20]);
+  const productYValues = [productY1, productY2, productY3];
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <section ref={containerRef} className="py-20 bg-gradient-to-br from-purple-600 to-pink-500 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Product Info */}
+    <section
+      ref={containerRef}
+      className="relative w-full"
+      style={{
+        background: "#FFF8F3",
+      }}
+    >
+      {/* Two column layout - no gap */}
+      <div className="grid lg:grid-cols-2 items-stretch">
+        {/* Left - Video */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            minHeight: "clamp(350px, 55vh, 500px)",
+          }}
+        >
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-6 text-white"
+            className="absolute inset-0"
+            style={{ scale: videoScale }}
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium"
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
             >
-              <Gift className="h-4 w-4" />
-              Daily Deal
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold"
-            >
-              Grab the Deal!
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              viewport={{ once: true }}
-              className="text-xl text-white/90"
-            >
-              Get multiple premium products at an unbeatable price. Limited
-              time offer - don't miss out!
-            </motion.p>
-
-            {/* Featured Products */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              viewport={{ once: true }}
-              className="space-y-3"
-            >
-              <h3 className="font-semibold text-lg">Today's Bundle Includes:</h3>
-              <ul className="space-y-2">
-                {[
-                  "Solar Veil SPF 50 (₹3,200)",
-                  "Dew Drops Serum (₹3,500)",
-                  "Lumiskin Cream (₹3,800)"
-                ].map((product, i) => (
-                  <motion.li
-                    key={product}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-2"
-                  >
-                    <motion.span
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                      className="text-yellow-300"
-                    >
-                      ★
-                    </motion.span>
-                    {product}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Pricing */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.7 }}
-              viewport={{ once: true }}
-              style={{ scale }}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 space-y-2"
-            >
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl line-through text-white/60">
-                  ₹10,500
-                </span>
-                <motion.span
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ delay: 0.8, type: "spring", bounce: 0.5 }}
-                  viewport={{ once: true }}
-                  className="text-4xl font-bold"
-                >
-                  ₹6,999
-                </motion.span>
-              </div>
-              <p className="text-white/80">Save ₹3,501 (33% off)</p>
-            </motion.div>
-
-            {/* Countdown Timer */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.9 }}
-              viewport={{ once: true }}
-              className="space-y-3"
-            >
-              <div className="flex items-center gap-2">
-                <Timer className="h-5 w-5" />
-                <span className="font-semibold">Deal ends in:</span>
-              </div>
-              <div className="flex gap-4">
-                {[
-                  { value: timeLeft.hours, label: "Hours" },
-                  { value: timeLeft.minutes, label: "Minutes" },
-                  { value: timeLeft.seconds, label: "Seconds" }
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1 + i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center min-w-[80px]"
-                  >
-                    <motion.div
-                      key={item.value}
-                      initial={{ scale: 1 }}
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 0.3 }}
-                      className="text-3xl font-bold"
-                    >
-                      {item.value}
-                    </motion.div>
-                    <div className="text-sm text-white/70">{item.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* CTA */}
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white hover:bg-gray-100 text-purple-600 px-8 py-4 rounded-full font-bold text-lg transition-colors w-full lg:w-auto shadow-xl"
-            >
-              Grab Now
-            </motion.button>
+              <source
+                src="/assets/videos/grab-the-deal.mp4"
+                type="video/mp4"
+              />
+            </video>
           </motion.div>
 
-          {/* Right: Placeholder for Claw Machine Animation */}
-          <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          {/* Right edge blur to hide watermark */}
+          <div
+            className="absolute inset-y-0 right-0 pointer-events-none"
+            style={{
+              width: "25%",
+              background: "linear-gradient(to left, rgba(255,248,243,1) 0%, rgba(255,248,243,0.8) 40%, transparent 100%)",
+            }}
+          />
+        </div>
+
+        {/* Right - Content */}
+        <div
+          className="flex flex-col justify-center"
+          style={{
+            padding: "clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem)",
+            background: "#FFF8F3",
+          }}
+        >
+          {/* Section label */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="relative aspect-square bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+            style={{
+              fontFamily: "var(--font-inter)",
+              fontSize: "clamp(0.6rem, 0.8vw, 0.7rem)",
+              fontWeight: 500,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(59,47,47,0.5)",
+              marginBottom: "clamp(0.5rem, 1vw, 0.75rem)",
+            }}
           >
-            {/* Placeholder Backdrop */}
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-white"
-            >
+            Limited Time Offer
+          </motion.p>
+
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            style={{
+              fontFamily: "var(--font-playfair)",
+              fontSize: "clamp(2.25rem, 4vw, 3.25rem)",
+              fontWeight: 400,
+              lineHeight: 1.1,
+              color: "#3B2F2F",
+              marginBottom: "clamp(1.5rem, 2.5vw, 2rem)",
+            }}
+          >
+            Grab the <span style={{ fontStyle: "italic" }}>Deal</span>
+          </motion.h2>
+
+          {/* Product cards - larger, transparent bg, custom shadows, parallax */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-3 gap-4 mb-6"
+            style={{ maxWidth: "450px" }}
+          >
+            {dealProducts.map((product, index) => (
               <motion.div
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                key={product.id}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.25 + index * 0.1 }}
+                viewport={{ once: true }}
+                style={{ y: productYValues[index] }}
+                className="text-center"
               >
-                <Gift className="h-20 w-20 mb-4" />
+                <div
+                  className="relative mx-auto mb-3"
+                  style={{
+                    width: "clamp(90px, 11vw, 120px)",
+                    height: "clamp(90px, 11vw, 120px)",
+                  }}
+                >
+                  {/* Custom shadow layers for depth */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      filter: "drop-shadow(0 8px 20px rgba(59,47,47,0.15)) drop-shadow(0 4px 8px rgba(59,47,47,0.1))",
+                    }}
+                  >
+                    <Image
+                      src={product.imageTransparent}
+                      alt={product.name}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <p
+                  style={{
+                    fontFamily: "var(--font-playfair)",
+                    fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
+                    fontWeight: 500,
+                    color: "#3B2F2F",
+                    textTransform: "capitalize",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {product.name}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-inter)",
+                    fontSize: "clamp(0.6rem, 0.75vw, 0.7rem)",
+                    color: "rgba(59,47,47,0.45)",
+                  }}
+                >
+                  {product.description}
+                </p>
               </motion.div>
-              <h3 className="text-2xl font-bold mb-2">
-                Claw Machine Animation
-              </h3>
-              <p className="text-white/80 mb-4">
-                Interactive 3D animation showing all three products being
-                grabbed at once!
-              </p>
-              <div className="text-sm text-white/60">Coming Soon</div>
-            </motion.div>
+            ))}
+          </motion.div>
 
-            {/* Animated Border */}
-            <div className="absolute inset-0 border-4 border-dashed border-white/30 rounded-2xl animate-pulse" />
-
-            {/* Decorative Elements */}
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              animate={{ rotate: [0, -5, 5, -5, 0] }}
-              transition={{ delay: 0.4, type: "spring", duration: 2, repeat: Infinity }}
-              className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold"
+          {/* Simple pricing text */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mb-6"
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
+                color: "rgba(59,47,47,0.6)",
+                lineHeight: 1.6,
+              }}
             >
-              Hot Deal 🔥
-            </motion.div>
+              Get all three for{" "}
+              <span
+                style={{
+                  fontFamily: "var(--font-playfair)",
+                  fontSize: "clamp(1.25rem, 1.75vw, 1.5rem)",
+                  fontWeight: 500,
+                  color: "#3B2F2F",
+                }}
+              >
+                ₹{dealPrice.toLocaleString()}
+              </span>
+              {" "}
+              <span
+                style={{
+                  textDecoration: "line-through",
+                  color: "rgba(59,47,47,0.35)",
+                }}
+              >
+                ₹{originalPrice.toLocaleString()}
+              </span>
+              {" — "}
+              <span style={{ color: "#3B2F2F", fontWeight: 500 }}>
+                Save ₹{savings.toLocaleString()}
+              </span>
+            </p>
+          </motion.div>
+
+          {/* Countdown + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-5 flex-wrap"
+          >
+            {/* Countdown */}
+            <div className="flex items-center gap-2">
+              <span
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.55rem, 0.7vw, 0.65rem)",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "rgba(59,47,47,0.4)",
+                }}
+              >
+                Ends in
+              </span>
+              <div
+                className="flex items-center gap-1"
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
+                  fontWeight: 600,
+                  color: "#3B2F2F",
+                  background: "rgba(255,255,255,0.9)",
+                  padding: "clamp(0.4rem, 0.6vw, 0.55rem) clamp(0.75rem, 1vw, 0.9rem)",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                  border: "1px solid rgba(59,47,47,0.06)",
+                }}
+              >
+                <span>{String(timeLeft.hours).padStart(2, "0")}</span>
+                <span style={{ opacity: 0.3 }}>:</span>
+                <span>{String(timeLeft.minutes).padStart(2, "0")}</span>
+                <span style={{ opacity: 0.3 }}>:</span>
+                <span>{String(timeLeft.seconds).padStart(2, "0")}</span>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={handleLinkClick}
+              className="group flex items-center gap-2 transition-all hover:scale-105"
+              style={{
+                background: "#3B2F2F",
+                color: "#FFF8F3",
+                padding: "clamp(0.75rem, 1.1vw, 1rem) clamp(1.5rem, 2.25vw, 2rem)",
+                borderRadius: "100px",
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(0.7rem, 0.85vw, 0.8rem)",
+                fontWeight: 500,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Grab Deal
+              <svg
+                className="transition-transform group-hover:translate-x-1"
+                style={{
+                  width: "clamp(0.9rem, 1.1vw, 1rem)",
+                  height: "clamp(0.9rem, 1.1vw, 1rem)",
+                }}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </button>
           </motion.div>
         </div>
       </div>

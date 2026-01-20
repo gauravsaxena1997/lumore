@@ -13,6 +13,18 @@ const statsData = [
   { value: "Dermatologist", label: "Tested", Icon: ShieldCheck },
 ];
 
+// Philosophy images that change with scroll
+const philosophyImages = [
+  {
+    src: "/assets/blog/blog-1.webp",
+    alt: "Lumore brand story",
+  },
+  {
+    src: "/assets/hero/hero-image-male-landscape.webp",
+    alt: "Skincare ritual",
+  },
+];
+
 // Static quote
 const quote = {
   text: "True beauty is not about perfection, it's about nurturing what makes you unique.",
@@ -144,6 +156,52 @@ function AnimatedStatsPair({
   );
 }
 
+// Animated Philosophy Image - changes with scroll
+function AnimatedPhilosophyImage({
+  image,
+  isFirst,
+  scrollYProgress,
+}: {
+  image: typeof philosophyImages[0];
+  isFirst: boolean;
+  scrollYProgress: MotionValue<number>;
+}) {
+  // Sync with stats animation timing
+  const opacity = useTransform(
+    scrollYProgress,
+    isFirst
+      ? [0, 0.35, 0.45, 0.5]
+      : [0.5, 0.55, 0.65, 1],
+    isFirst
+      ? [1, 1, 0.3, 0]
+      : [0, 0.3, 1, 1]
+  );
+
+  const scale = useTransform(
+    scrollYProgress,
+    isFirst
+      ? [0, 0.35, 0.5]
+      : [0.5, 0.65, 1],
+    isFirst
+      ? [1, 1, 1.02]
+      : [1.02, 1, 1]
+  );
+
+  return (
+    <motion.div
+      className="absolute inset-0"
+      style={{ opacity, scale }}
+    >
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover object-center"
+        sizes="(max-width: 1024px) 90vw, 45vw"
+      />
+    </motion.div>
+  );
+}
 
 export default function BrandStory() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -331,20 +389,24 @@ export default function BrandStory() {
                     zIndex: 4,
                   }}
                 >
-                  {/* Image container */}
+                  {/* Image container - animated images that change with stats */}
                   <div
                     className="relative w-full overflow-hidden"
                     style={{
                       aspectRatio: "16/9",
                     }}
                   >
-                    <Image
-                      src="/assets/blog/blog-1.webp"
-                      alt="Lumore brand story"
-                      fill
-                      className="object-cover object-center"
-                      sizes="(max-width: 1024px) 90vw, 45vw"
-                      priority
+                    {/* First image (blog-1) - synced with first stats pair */}
+                    <AnimatedPhilosophyImage
+                      image={philosophyImages[0]}
+                      isFirst={true}
+                      scrollYProgress={scrollYProgress}
+                    />
+                    {/* Second image (hero-male) - synced with second stats pair */}
+                    <AnimatedPhilosophyImage
+                      image={philosophyImages[1]}
+                      isFirst={false}
+                      scrollYProgress={scrollYProgress}
                     />
                   </div>
 
