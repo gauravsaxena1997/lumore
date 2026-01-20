@@ -23,7 +23,7 @@ export default function BrandMotto() {
       ref={sectionRef}
       className="relative w-full overflow-hidden"
       style={{
-        minHeight: "clamp(500px, 80vh, 700px)",
+        minHeight: "clamp(350px, 50vh, 450px)",
         // Sky gradient background
         background: "linear-gradient(180deg, #E8F4FC 0%, #F5FAFD 30%, #FFFFFF 70%, #FFF8F3 100%)",
       }}
@@ -32,7 +32,7 @@ export default function BrandMotto() {
         .motto-container {
           max-width: 1400px;
           margin: 0 auto;
-          padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+          padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 4rem);
           position: relative;
           display: flex;
           align-items: center;
@@ -191,25 +191,6 @@ export default function BrandMotto() {
 
         {/* Center Content */}
         <div className="motto-content">
-          {/* Eyebrow */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            style={{
-              fontFamily: "var(--font-inter)",
-              fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
-              fontWeight: 500,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "#5B8DB8",
-              marginBottom: "clamp(1rem, 2vw, 1.5rem)",
-            }}
-          >
-            Our Philosophy
-          </motion.p>
-
           {/* Main Motto */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}

@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Sparkles, Factory } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { products } from "@/lib/constants";
+
+// Melt Away Balm - New Release product
+const meltAwayBalm = products[4]; // id: 5, index: 4
 
 export default function NewRelease() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,179 +15,343 @@ export default function NewRelease() {
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [-5, 5]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
+  const productY = useTransform(scrollYProgress, [0, 1], [15, -15]);
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
 
   return (
-    <section ref={containerRef} className="py-20 bg-gradient-to-br from-purple-50 to-pink-50 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Placeholder for Manufacturing Video */}
+    <section
+      ref={containerRef}
+      className="relative w-full"
+      style={{
+        background: "#FFF8F3",
+      }}
+    >
+      {/* Two column layout - video left, content right (matching GrabTheDeal) */}
+      <div className="grid lg:grid-cols-2 items-stretch">
+        {/* Left - Video */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            minHeight: "clamp(350px, 55vh, 500px)",
+          }}
+        >
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            style={{ rotate }}
-            className="relative aspect-video bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl overflow-hidden shadow-lg"
+            className="absolute inset-0"
+            style={{ scale: videoScale }}
           >
-            {/* Placeholder Backdrop */}
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center"
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
             >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                <Factory className="h-20 w-20 text-purple-600 mb-4" />
-              </motion.div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Manufacturing Video
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Watch how Solar Veil is crafted with precision and care
-              </p>
-              <div className="text-sm text-gray-500">
-                Coming Soon
-              </div>
-            </motion.div>
-
-            {/* Animated Border */}
-            <div className="absolute inset-0 border-4 border-dashed border-purple-300 rounded-2xl animate-pulse" />
+              <source
+                src="/assets/videos/new-release-factory.mp4"
+                type="video/mp4"
+              />
+            </video>
           </motion.div>
 
-          {/* Right: Product Info */}
+          {/* Right edge gradient for seamless blend */}
+          <div
+            className="absolute inset-y-0 right-0 pointer-events-none"
+            style={{
+              width: "25%",
+              background:
+                "linear-gradient(to left, rgba(255,248,243,1) 0%, rgba(255,248,243,0.8) 40%, transparent 100%)",
+            }}
+          />
+
+          {/* New Release badge on video */}
           <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="absolute top-6 left-6"
+            style={{
+              background: "rgba(255,255,255,0.95)",
+              backdropFilter: "blur(10px)",
+              padding: "clamp(0.5rem, 0.75vw, 0.65rem) clamp(1rem, 1.25vw, 1.15rem)",
+              borderRadius: "100px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+            }}
           >
+            <span
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(0.55rem, 0.7vw, 0.65rem)",
+                fontWeight: 600,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "#3B2F2F",
+              }}
+            >
+              ✦ Just Launched
+            </span>
+          </motion.div>
+        </div>
+
+        {/* Right - Content */}
+        <div
+          className="flex flex-col justify-center"
+          style={{
+            padding: "clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem)",
+            background: "#FFF8F3",
+          }}
+        >
+          {/* Section label */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            style={{
+              fontFamily: "var(--font-inter)",
+              fontSize: "clamp(0.6rem, 0.8vw, 0.7rem)",
+              fontWeight: 500,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(59,47,47,0.5)",
+              marginBottom: "clamp(0.5rem, 1vw, 0.75rem)",
+            }}
+          >
+            New Release
+          </motion.p>
+
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            style={{
+              fontFamily: "var(--font-playfair)",
+              fontSize: "clamp(2.25rem, 4vw, 3.25rem)",
+              fontWeight: 400,
+              lineHeight: 1.1,
+              color: "#3B2F2F",
+              marginBottom: "clamp(1.5rem, 2.5vw, 2rem)",
+            }}
+          >
+            Melt <span style={{ fontStyle: "italic" }}>Away</span>
+          </motion.h2>
+
+          {/* Product card with image */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="flex items-start gap-5 mb-6"
+          >
+            {/* Product image */}
             <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium"
+              style={{ y: productY }}
+              className="relative flex-shrink-0"
             >
-              <Sparkles className="h-4 w-4" />
-              New Release
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold text-gray-900"
-            >
-              Solar Veil SPF 50
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              viewport={{ once: true }}
-              className="text-lg text-gray-600"
-            >
-              Your daily defense against sun damage. Lightweight, non-greasy
-              formula with Vitamin C and Niacinamide for added brightening.
-            </motion.p>
-
-            {/* Key Ingredients */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              viewport={{ once: true }}
-              className="space-y-3"
-            >
-              <h3 className="font-semibold text-gray-900">
-                Key Ingredients:
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {["Vitamin C", "Niacinamide", "Zinc Oxide", "Hyaluronic Acid"].map((ingredient, i) => (
-                  <motion.span
-                    key={ingredient}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.6 + i * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.1 }}
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      i === 0 ? "bg-orange-100 text-orange-700" :
-                      i === 1 ? "bg-blue-100 text-blue-700" :
-                      i === 2 ? "bg-gray-100 text-gray-700" :
-                      "bg-teal-100 text-teal-700"
-                    }`}
-                  >
-                    {ingredient}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Benefits */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              viewport={{ once: true }}
-              className="space-y-2"
-            >
-              <h3 className="font-semibold text-gray-900">
-                Benefits:
-              </h3>
-              <ul className="space-y-1">
-                {[
-                  "SPF 50 broad spectrum protection",
-                  "Brightens and evens skin tone",
-                  "Lightweight, non-greasy formula",
-                  "No white cast"
-                ].map((benefit, i) => (
-                  <motion.li
-                    key={benefit}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 + i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-2 text-gray-700"
-                  >
-                    <span className="text-green-500">✓</span>
-                    {benefit}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Price and CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 pt-4"
-            >
-              <div>
-                <p className="text-3xl font-bold text-gray-900">
-                  ₹3,200
-                </p>
-                <p className="text-sm text-gray-500">50ml</p>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-medium transition-colors flex-1"
+              <div
+                className="relative"
+                style={{
+                  width: "clamp(90px, 11vw, 120px)",
+                  height: "clamp(90px, 11vw, 120px)",
+                }}
               >
-                Shop Now
-              </motion.button>
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    filter:
+                      "drop-shadow(0 8px 20px rgba(59,47,47,0.15)) drop-shadow(0 4px 8px rgba(59,47,47,0.1))",
+                  }}
+                >
+                  <Image
+                    src={meltAwayBalm.imageTransparent}
+                    alt={meltAwayBalm.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             </motion.div>
+
+            {/* Product info */}
+            <div className="flex-1">
+              <p
+                style={{
+                  fontFamily: "var(--font-playfair)",
+                  fontSize: "clamp(1rem, 1.25vw, 1.15rem)",
+                  fontWeight: 500,
+                  color: "#3B2F2F",
+                  textTransform: "capitalize",
+                  marginBottom: "4px",
+                }}
+              >
+                {meltAwayBalm.name}
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.7rem, 0.85vw, 0.8rem)",
+                  color: "rgba(59,47,47,0.5)",
+                  marginBottom: "8px",
+                }}
+              >
+                {meltAwayBalm.description}
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.8rem, 0.95vw, 0.9rem)",
+                  color: "rgba(59,47,47,0.65)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Effortlessly dissolves makeup, sunscreen, and impurities while
+                nourishing your skin.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Key Ingredients inline */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="flex flex-wrap gap-2 mb-6"
+          >
+            {meltAwayBalm.ingredients.map((ingredient, index) => (
+              <span
+                key={ingredient}
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
+                  fontWeight: 500,
+                  color: "#3B2F2F",
+                  background: "rgba(255,255,255,0.9)",
+                  padding: "clamp(0.35rem, 0.5vw, 0.45rem) clamp(0.75rem, 1vw, 0.9rem)",
+                  borderRadius: "100px",
+                  border: "1px solid rgba(59,47,47,0.06)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                }}
+              >
+                {ingredient}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Price + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-5 flex-wrap"
+          >
+            {/* Price */}
+            <div>
+              <p
+                style={{
+                  fontFamily: "var(--font-playfair)",
+                  fontSize: "clamp(1.25rem, 1.75vw, 1.5rem)",
+                  fontWeight: 500,
+                  color: "#3B2F2F",
+                  lineHeight: 1,
+                }}
+              >
+                ₹{meltAwayBalm.price.toLocaleString()}
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(0.6rem, 0.75vw, 0.7rem)",
+                  color: "rgba(59,47,47,0.4)",
+                  marginTop: "2px",
+                }}
+              >
+                {meltAwayBalm.size}
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={handleLinkClick}
+              className="group flex items-center gap-2 transition-all hover:scale-105"
+              style={{
+                background: "#3B2F2F",
+                color: "#FFF8F3",
+                padding: "clamp(0.75rem, 1.1vw, 1rem) clamp(1.5rem, 2.25vw, 2rem)",
+                borderRadius: "100px",
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(0.7rem, 0.85vw, 0.8rem)",
+                fontWeight: 500,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Shop Now
+              <svg
+                className="transition-transform group-hover:translate-x-1"
+                style={{
+                  width: "clamp(0.9rem, 1.1vw, 1rem)",
+                  height: "clamp(0.9rem, 1.1vw, 1rem)",
+                }}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </button>
+          </motion.div>
+
+          {/* Rating */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-4 flex items-center gap-2"
+          >
+            <div className="flex items-center gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  style={{
+                    width: "clamp(0.75rem, 0.9vw, 0.85rem)",
+                    height: "clamp(0.75rem, 0.9vw, 0.85rem)",
+                    color:
+                      i < Math.floor(meltAwayBalm.rating)
+                        ? "#C9A962"
+                        : "rgba(59,47,47,0.2)",
+                  }}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <span
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
+                color: "rgba(59,47,47,0.5)",
+              }}
+            >
+              {meltAwayBalm.rating} ({meltAwayBalm.reviewCount.toLocaleString()}{" "}
+              reviews)
+            </span>
           </motion.div>
         </div>
       </div>

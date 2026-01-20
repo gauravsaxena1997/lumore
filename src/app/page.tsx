@@ -1,7 +1,7 @@
 import Hero from "@/components/homepage/Hero";
 import BrandStory from "@/components/homepage/BrandStory";
 import TopShelfPicks from "@/components/homepage/TopShelfPicks";
-import NewReleasePlaceholder from "@/components/homepage/NewReleasePlaceholder";
+import NewRelease from "@/components/homepage/NewRelease";
 import GrabTheDeal from "@/components/homepage/GrabTheDeal";
 import IngredientPhilosophy from "@/components/homepage/IngredientPhilosophy";
 import BrandMotto from "@/components/homepage/BrandMotto";
@@ -17,10 +17,10 @@ export default function Home() {
       <Hero />
       <BrandStory />
       <TopShelfPicks />
-      <NewReleasePlaceholder />
+      <NewRelease />
+      <BrandMotto />
       <GrabTheDeal />
       <IngredientPhilosophy />
-      <BrandMotto />
       <Testimonials />
       <PressAwards />
       <FounderStory />
