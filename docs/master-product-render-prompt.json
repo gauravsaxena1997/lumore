@@ -1,0 +1,245 @@
+{
+  "meta": {
+    "schemaVersion": "1.0.0",
+    "brandName": "Lumore",
+    "collectionName": "Core Skincare",
+    "productInternalId": "",
+    "productDisplayName": "",
+    "productShortName": "",
+    "productCategory": "",
+    "description": "Master product definition for neutral green-screen renders used as base assets for all further mockups and videos."
+  },
+
+  "packaging": {
+    "shape": {
+      "type": "tube", 
+      "subtype": "soft-touch_airless",
+      "silhouetteKeywords": [
+        "gently_tapered",
+        "soft_hourglass",
+        "subtle_curves",
+        "no_hard_edges",
+        "premium_minimal"
+      ],
+      "heightToWidthRatio": 3.2,
+      "capToBodyHeightRatio": 0.22,
+      "capShape": "cylindrical_flush",
+      "description": "Defines the industrial design shape and proportions of the pack."
+    },
+    "material": {
+      "bodyMaterial": "soft_touch_matte_polymer",
+      "capMaterial": "satin_metallic",
+      "finishKeywords": [
+        "velvety_matte",
+        "non_glossy",
+        "no_texture",
+        "no_reflections"
+      ],
+      "description": "Physical feel and visual finish of the pack. This is conceptual; renders remain neutral."
+    },
+    "dimensions": {
+      "units": "mm",
+      "approxHeight": 135,
+      "approxBodyWidth": 42,
+      "approxDepth": 25,
+      "description": "Rough physical proportions to keep products realistic and consistent."
+    },
+    "colors": {
+      "bodyHex": "#FFF9F4",
+      "capHex": "#E8D7B8",
+      "labelTextHex": "#111111",
+      "accentHex": "#C9B89B",
+      "description": "Base neutral colors; these can be remapped to themes later."
+    }
+  },
+
+  "renderMaster": {
+    "background": {
+      "type": "flat_chroma",
+      "hex": "#00FF00",
+      "allowGradient": false,
+      "allowTexture": false,
+      "allowVignette": false,
+      "description": "Clean, solid green-screen for easy compositing."
+    },
+    "lighting": {
+      "style": "flat_neutral",
+      "directionalLights": 0,
+      "ambientOnly": true,
+      "allowShadows": false,
+      "allowReflections": false,
+      "allowSpecularHighlights": false,
+      "description": "Neutral, shadowless lighting so the asset is easy to reuse."
+    },
+    "camera": {
+      "projection": "orthographic_like",
+      "focalLengthMm": 50,
+      "aspectRatio": "1:1",
+      "framing": "product_centered",
+      "paddingRatio": 0.18,
+      "description": "How the camera frames the product in the master render."
+    },
+    "export": {
+      "resolutionPx": 2048,
+      "format": "PNG",
+      "colorSpace": "sRGB",
+      "transparentVersionRequired": true,
+      "description": "Target export settings after chroma-key removal."
+    }
+  },
+
+  "views": [
+    {
+      "viewId": "front",
+      "role": "primary_master",
+      "angleName": "front_view",
+      "rotationDegreesY": 0,
+      "rotationDegreesX": 0,
+      "description": "Straight-on, centered front view; main reference for all UI and comps."
+    },
+    {
+      "viewId": "angle_45_left",
+      "role": "hero",
+      "angleName": "45_degree_left",
+      "rotationDegreesY": -45,
+      "rotationDegreesX": 0,
+      "description": "Hero angle, slightly rotated left."
+    },
+    {
+      "viewId": "angle_45_right",
+      "role": "hero_alt",
+      "angleName": "45_degree_right",
+      "rotationDegreesY": 45,
+      "rotationDegreesX": 0,
+      "description": "Alternative hero angle, rotated right."
+    },
+    {
+      "viewId": "side_left",
+      "role": "structural",
+      "angleName": "side_profile_left",
+      "rotationDegreesY": -90,
+      "rotationDegreesX": 0,
+      "description": "Pure side profile for structural/technical consistency."
+    },
+    {
+      "viewId": "top_down",
+      "role": "flatlay_base",
+      "angleName": "top_down",
+      "rotationDegreesY": 0,
+      "rotationDegreesX": -90,
+      "description": "Orthographic-style overhead view for flatlay compositions."
+    }
+  ],
+
+  "labelLayout": {
+    "fontSystem": {
+      "brandFontFamily": "Modern_Humanist_Sans",
+      "productFontFamily": "Refined_Serif_or_Soft_Sans",
+      "fallbackFamily": "clean_sans_serif",
+      "description": "Style hints; renderer can map to available fonts."
+    },
+    "textBlocks": [
+      {
+        "id": "brand_name",
+        "role": "brand",
+        "content": "Lumore",
+        "sizeRatio": 0.08,
+        "weight": "medium",
+        "position": {
+          "x": 0.5,
+          "y": 0.32,
+          "anchor": "center"
+        },
+        "tracking": "slight",
+        "case": "title",
+        "description": "Brand name, clean and centered in upper-middle of pack."
+      },
+      {
+        "id": "product_name",
+        "role": "product",
+        "content": "",
+        "sizeRatio": 0.045,
+        "weight": "regular",
+        "position": {
+          "x": 0.5,
+          "y": 0.52,
+          "anchor": "center"
+        },
+        "tracking": "normal",
+        "case": "title",
+        "description": "Product name line, slightly below brand."
+      },
+      {
+        "id": "product_tagline",
+        "role": "descriptor",
+        "content": "",
+        "sizeRatio": 0.028,
+        "weight": "regular",
+        "position": {
+          "x": 0.5,
+          "y": 0.60,
+          "anchor": "center"
+        },
+        "tracking": "normal",
+        "case": "sentence",
+        "maxLines": 2,
+        "description": "Short descriptor or benefit line."
+      },
+      {
+        "id": "volume",
+        "role": "volume",
+        "content": "",
+        "sizeRatio": 0.024,
+        "weight": "regular",
+        "position": {
+          "x": 0.5,
+          "y": 0.70,
+          "anchor": "center"
+        },
+        "tracking": "normal",
+        "case": "upper_smallcaps",
+        "description": "Volume info like 50 ml / 1.7 fl oz."
+      }
+    ],
+    "alignmentRules": {
+      "horizontalAlignment": "center",
+      "verticalLayout": "stacked",
+      "maxTotalLines": 6,
+      "description": "Keep everything vertically stacked and center aligned for a calm luxury feel."
+    }
+  },
+
+  "constraints": {
+    "disallowShadows": true,
+    "disallowReflections": true,
+    "disallowEnvironment": true,
+    "disallowAdditionalProps": true,
+    "disallowHandsOrModels": true,
+    "disallowExtraGraphicsOnPack": true,
+    "description": "Hard rules to avoid demo-looking or cluttered renders."
+  },
+
+  "promptHints": {
+    "styleKeywords": [
+      "ultra_clean",
+      "industrial_design_packshot",
+      "luxury_skincare",
+      "minimalist",
+      "modern",
+      "science_led",
+      "high_end_D2C",
+      "K-beauty_and_J-beauty_inspired"
+    ],
+    "avoidKeywords": [
+      "cheap_plastic",
+      "drugstore",
+      "cartoonish",
+      "strong_glare",
+      "harsh_shadow",
+      "environment",
+      "props",
+      "floating_particles"
+    ],
+    "description": "Extra hint words to steer the model towards a premium look, and away from low-quality cues."
+  }
+}

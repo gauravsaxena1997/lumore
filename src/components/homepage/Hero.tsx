@@ -1,0 +1,132 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const heroImages = [
+  {
+    id: 1,
+    src: "/assets/hero/hero-image-female.webp",
+    alt: "Underwater split photography - Lumore skincare",
+    tagline: "Dive into Radiance",
+    subtitle: "Premium skincare for luminous skin",
+  },
+  {
+    id: 2,
+    src: "/assets/hero/hero-image-male.webp",
+    alt: "Urban coastal lifestyle - Lumore skincare",
+    tagline: "Confidence in Every Drop",
+    subtitle: "Scientifically formulated, dermatologist-tested",
+  },
+  {
+    id: 3,
+    src: "/assets/hero/hero-image-duo.webp",
+    alt: "Convertible duo lifestyle - Lumore skincare",
+    tagline: "Glow Together",
+    subtitle: "Skincare that works for everyone",
+  },
+];
+
+export default function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // Auto-rotate every 5 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  return (
+    <section className="relative h-[600px] md:h-[700px] overflow-hidden bg-gray-100 dark:bg-gray-900">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative h-full w-full"
+        >
+          {/* Background Image */}
+          <Image
+            src={heroImages[currentSlide].src}
+            alt={heroImages[currentSlide].alt}
+            fill
+            priority={currentSlide === 0}
+            loading={currentSlide === 0 ? "eager" : "lazy"}
+            className="object-cover"
+          />
+
+          {/* Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
+
+          {/* Content */}
+          <div className="absolute inset-0 flex items-center">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="max-w-xl"
+              >
+                <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+                  {heroImages[currentSlide].tagline}
+                </h1>
+                <p className="text-xl text-white/90 mb-8">
+                  {heroImages[currentSlide].subtitle}
+                </p>
+                <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-medium transition-colors">
+                  Explore More
+                </button>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        aria-label="Previous slide"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full transition-colors"
+      >
+        <ChevronLeft className="h-6 w-6 text-white" />
+      </button>
+      <button
+        onClick={nextSlide}
+        aria-label="Next slide"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full transition-colors"
+      >
+        <ChevronRight className="h-6 w-6 text-white" />
+      </button>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            aria-label={`Go to slide ${index + 1}`}
+            className={`h-2 w-2 rounded-full transition-all ${
+              index === currentSlide
+                ? "bg-white w-8"
+                : "bg-white/50 hover:bg-white/75"
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
