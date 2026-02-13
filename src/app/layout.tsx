@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/shared/Footer";
+import MobileWarning from "@/components/shared/MobileWarning";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -38,6 +39,7 @@ export default function RootLayout({
         className={`${playfair.variable} ${inter.variable} ${dancingScript.variable} antialiased`}
         style={{ overscrollBehavior: 'none', fontFamily: 'var(--font-inter)' }}
       >
+        <MobileWarning />
         <main id="main-content">{children}</main>
         <Footer />
       </body>
